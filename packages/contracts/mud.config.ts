@@ -3,17 +3,12 @@ import { defineWorld } from "@latticexyz/world";
 export default defineWorld({
   namespace: "app",
   tables: {
-    Counter: {
-      schema: {
-        value: "uint32",
-      },
-      key: [],
-    },
     FisheryPool: {
       schema: {
         stock: "uint32",
         round: "uint32",
         collapsed: "bool",
+        hardRule: "bool",
       },
       key: [],
     },

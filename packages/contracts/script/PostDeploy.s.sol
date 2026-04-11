@@ -5,8 +5,6 @@ import { Script } from "forge-std/Script.sol";
 import { console } from "forge-std/console.sol";
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 
-import { IWorld } from "../src/codegen/world/IWorld.sol";
-
 contract PostDeploy is Script {
   function run(address worldAddress) external {
     // Specify a store so that you can use tables directly in PostDeploy
@@ -18,11 +16,8 @@ contract PostDeploy is Script {
     // Start broadcasting transactions from the deployer account
     vm.startBroadcast(deployerPrivateKey);
 
-    // ------------------ EXAMPLES ------------------
-
-    // Call increment on the world via the registered function selector
-    uint32 newValue = IWorld(worldAddress).app__increment();
-    console.log("Increment via IWorld:", newValue);
+    // Fishery init is done by the experiment orchestrator or tests to choose soft vs hard rule.
+    console.log("World deployed at:", worldAddress);
 
     vm.stopBroadcast();
   }

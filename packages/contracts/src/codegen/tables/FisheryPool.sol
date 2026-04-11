@@ -20,6 +20,7 @@ struct FisheryPoolData {
   uint32 stock;
   uint32 round;
   bool collapsed;
+  bool hardRule;
 }
 
 library FisheryPool {
@@ -27,12 +28,12 @@ library FisheryPool {
   ResourceId constant _tableId = ResourceId.wrap(0x7462617070000000000000000000000046697368657279506f6f6c0000000000);
 
   FieldLayout constant _fieldLayout =
-    FieldLayout.wrap(0x0009030004040100000000000000000000000000000000000000000000000000);
+    FieldLayout.wrap(0x000a040004040101000000000000000000000000000000000000000000000000);
 
   // Hex-encoded key schema of ()
   Schema constant _keySchema = Schema.wrap(0x0000000000000000000000000000000000000000000000000000000000000000);
-  // Hex-encoded value schema of (uint32, uint32, bool)
-  Schema constant _valueSchema = Schema.wrap(0x0009030003036000000000000000000000000000000000000000000000000000);
+  // Hex-encoded value schema of (uint32, uint32, bool, bool)
+  Schema constant _valueSchema = Schema.wrap(0x000a040003036060000000000000000000000000000000000000000000000000);
 
   /**
    * @notice Get the table's key field names.
@@ -47,10 +48,11 @@ library FisheryPool {
    * @return fieldNames An array of strings with the names of value fields.
    */
   function getFieldNames() internal pure returns (string[] memory fieldNames) {
-    fieldNames = new string[](3);
+    fieldNames = new string[](4);
     fieldNames[0] = "stock";
     fieldNames[1] = "round";
     fieldNames[2] = "collapsed";
+    fieldNames[3] = "hardRule";
   }
 
   /**
@@ -182,6 +184,44 @@ library FisheryPool {
   }
 
   /**
+   * @notice Get hardRule.
+   */
+  function getHardRule() internal view returns (bool hardRule) {
+    bytes32[] memory _keyTuple = new bytes32[](0);
+
+    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 3, _fieldLayout);
+    return (_toBool(uint8(bytes1(_blob))));
+  }
+
+  /**
+   * @notice Get hardRule.
+   */
+  function _getHardRule() internal view returns (bool hardRule) {
+    bytes32[] memory _keyTuple = new bytes32[](0);
+
+    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 3, _fieldLayout);
+    return (_toBool(uint8(bytes1(_blob))));
+  }
+
+  /**
+   * @notice Set hardRule.
+   */
+  function setHardRule(bool hardRule) internal {
+    bytes32[] memory _keyTuple = new bytes32[](0);
+
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 3, abi.encodePacked((hardRule)), _fieldLayout);
+  }
+
+  /**
+   * @notice Set hardRule.
+   */
+  function _setHardRule(bool hardRule) internal {
+    bytes32[] memory _keyTuple = new bytes32[](0);
+
+    StoreCore.setStaticField(_tableId, _keyTuple, 3, abi.encodePacked((hardRule)), _fieldLayout);
+  }
+
+  /**
    * @notice Get the full data.
    */
   function get() internal view returns (FisheryPoolData memory _table) {
@@ -212,8 +252,8 @@ library FisheryPool {
   /**
    * @notice Set the full data using individual values.
    */
-  function set(uint32 stock, uint32 round, bool collapsed) internal {
-    bytes memory _staticData = encodeStatic(stock, round, collapsed);
+  function set(uint32 stock, uint32 round, bool collapsed, bool hardRule) internal {
+    bytes memory _staticData = encodeStatic(stock, round, collapsed, hardRule);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -226,8 +266,8 @@ library FisheryPool {
   /**
    * @notice Set the full data using individual values.
    */
-  function _set(uint32 stock, uint32 round, bool collapsed) internal {
-    bytes memory _staticData = encodeStatic(stock, round, collapsed);
+  function _set(uint32 stock, uint32 round, bool collapsed, bool hardRule) internal {
+    bytes memory _staticData = encodeStatic(stock, round, collapsed, hardRule);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -241,7 +281,7 @@ library FisheryPool {
    * @notice Set the full data using the data struct.
    */
   function set(FisheryPoolData memory _table) internal {
-    bytes memory _staticData = encodeStatic(_table.stock, _table.round, _table.collapsed);
+    bytes memory _staticData = encodeStatic(_table.stock, _table.round, _table.collapsed, _table.hardRule);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -255,7 +295,7 @@ library FisheryPool {
    * @notice Set the full data using the data struct.
    */
   function _set(FisheryPoolData memory _table) internal {
-    bytes memory _staticData = encodeStatic(_table.stock, _table.round, _table.collapsed);
+    bytes memory _staticData = encodeStatic(_table.stock, _table.round, _table.collapsed, _table.hardRule);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -268,12 +308,16 @@ library FisheryPool {
   /**
    * @notice Decode the tightly packed blob of static data using this table's field layout.
    */
-  function decodeStatic(bytes memory _blob) internal pure returns (uint32 stock, uint32 round, bool collapsed) {
+  function decodeStatic(
+    bytes memory _blob
+  ) internal pure returns (uint32 stock, uint32 round, bool collapsed, bool hardRule) {
     stock = (uint32(Bytes.getBytes4(_blob, 0)));
 
     round = (uint32(Bytes.getBytes4(_blob, 4)));
 
     collapsed = (_toBool(uint8(Bytes.getBytes1(_blob, 8))));
+
+    hardRule = (_toBool(uint8(Bytes.getBytes1(_blob, 9))));
   }
 
   /**
@@ -287,7 +331,7 @@ library FisheryPool {
     EncodedLengths,
     bytes memory
   ) internal pure returns (FisheryPoolData memory _table) {
-    (_table.stock, _table.round, _table.collapsed) = decodeStatic(_staticData);
+    (_table.stock, _table.round, _table.collapsed, _table.hardRule) = decodeStatic(_staticData);
   }
 
   /**
@@ -312,8 +356,13 @@ library FisheryPool {
    * @notice Tightly pack static (fixed length) data using this table's schema.
    * @return The static data, encoded into a sequence of bytes.
    */
-  function encodeStatic(uint32 stock, uint32 round, bool collapsed) internal pure returns (bytes memory) {
-    return abi.encodePacked(stock, round, collapsed);
+  function encodeStatic(
+    uint32 stock,
+    uint32 round,
+    bool collapsed,
+    bool hardRule
+  ) internal pure returns (bytes memory) {
+    return abi.encodePacked(stock, round, collapsed, hardRule);
   }
 
   /**
@@ -325,9 +374,10 @@ library FisheryPool {
   function encode(
     uint32 stock,
     uint32 round,
-    bool collapsed
+    bool collapsed,
+    bool hardRule
   ) internal pure returns (bytes memory, EncodedLengths, bytes memory) {
-    bytes memory _staticData = encodeStatic(stock, round, collapsed);
+    bytes memory _staticData = encodeStatic(stock, round, collapsed, hardRule);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
