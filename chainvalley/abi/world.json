@@ -13,7 +13,28 @@
       { "name": "agentId", "type": "bytes32" },
       { "name": "requested", "type": "uint8" }
     ],
-    "outputs": [{ "name": "executed", "type": "uint8" }],
+    "outputs": [{ "name": "accepted", "type": "uint8" }],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "app__recordRejectedHarvest",
+    "inputs": [
+      { "name": "agentId", "type": "bytes32" },
+      { "name": "requested", "type": "uint8" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "app__endRound",
+    "inputs": [],
+    "outputs": [
+      { "name": "round", "type": "uint32" },
+      { "name": "stockAfterRegeneration", "type": "uint32" },
+      { "name": "collapsed", "type": "bool" }
+    ],
     "stateMutability": "nonpayable"
   },
   {
@@ -26,6 +47,31 @@
       { "name": "collapsed", "type": "bool" },
       { "name": "hardRule", "type": "bool" }
     ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "app__getPendingRoundState",
+    "inputs": [],
+    "outputs": [
+      { "name": "submissionCount", "type": "uint8" },
+      { "name": "submitted", "type": "bool[5]" },
+      { "name": "requestedHarvests", "type": "uint32[5]" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "app__getRoundLog",
+    "inputs": [{ "name": "round", "type": "uint32" }],
+    "outputs": [{ "name": "executedHarvests", "type": "uint32[5]" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "app__getAllCumulativeHarvests",
+    "inputs": [],
+    "outputs": [{ "name": "cumulativeHarvests", "type": "uint32[5]" }],
     "stateMutability": "view"
   }
 ]

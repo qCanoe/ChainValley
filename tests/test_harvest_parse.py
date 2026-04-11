@@ -11,5 +11,10 @@ def test_parse_harvest_decision_fenced() -> None:
     assert parse_harvest_decision(text) == 2
 
 
+def test_parse_harvest_decision_over_quota_allowed() -> None:
+    text = '{"harvest": 12}'
+    assert parse_harvest_decision(text) == 12
+
+
 def test_parse_harvest_decision_invalid() -> None:
     assert parse_harvest_decision("not json") is None
