@@ -1,17 +1,60 @@
+# Environment & secrets
 .env
+.env.local
+.env.*.local
+
+# Python
 .venv/
 venv/
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
 .pytest_cache/
 .mypy_cache/
+.ruff_cache/
+.hypothesis/
+.coverage
+htmlcov/
+coverage.xml
+*.egg-info/
+dist/
+build/
 
+# Node / package managers
+node_modules/
+.pnpm-debug.log*
+npm-debug.log*
+yarn-error.log*
+
+# TypeScript / JS tooling
+*.tsbuildinfo
+.turbo/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Experiment & run outputs
 artifacts/
 
-node_modules
+# MUD (Lattice)
+.mud/
 
-# mud artifacts
-.mud
-# sqlite indexer data
+# Local DB / indexer
 *.db
 *.db-journal
+
+# Foundry (if build/deploy run from repo root)
+out/
+cache/
+broadcast/
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE (local overrides; shared .vscode may stay tracked)
+.idea/
+
+# Logs
+*.log
