@@ -50,4 +50,14 @@ contract FisherySystem is System {
 
     return executed;
   }
+
+  /// @notice Read singleton pool state (for RPC / off-chain orchestrator).
+  function getPoolState()
+    public
+    view
+    returns (uint32 stock, uint32 round, bool collapsed, bool hardRule)
+  {
+    FisheryPoolData memory pool = FisheryPool.get();
+    return (pool.stock, pool.round, pool.collapsed, pool.hardRule);
+  }
 }

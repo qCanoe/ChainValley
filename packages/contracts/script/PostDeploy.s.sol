@@ -5,18 +5,23 @@ import { Script } from "forge-std/Script.sol";
 import { console } from "forge-std/console.sol";
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 
+import { IWorld } from "../src/codegen/world/IWorld.sol";
+
 contract PostDeploy is Script {
   function run(address worldAddress) external {
-    // Specify a store so that you can use tables directly in PostDeploy
     StoreSwitch.setStoreAddress(worldAddress);
 
-    // Load the private key from the `PRIVATE_KEY` environment variable (in .env)
     uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
 
-    // Start broadcasting transactions from the deployer account
     vm.startBroadcast(deployerPrivateKey);
 
-    // Fishery init is done by the experiment orchestrator or tests to choose soft vs hard rule.
+    uint256 doInit = vm.envOr("FISHERY_DO_INIT", uint256(0));
+    if (doInit == 1) {
+      uint256 hard = vm.envOr("FISHERY_HARD_RULE", uint256(1));
+      uint32 stock = IWorld(worldAddress).app__initFishery(hard == 1);
+      console.log("Fishery init stock:", stock);
+    }
+
     console.log("World deployed at:", worldAddress);
 
     vm.stopBroadcast();

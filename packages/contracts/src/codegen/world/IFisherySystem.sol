@@ -12,4 +12,9 @@ interface IFisherySystem {
   function app__initFishery(bool hardRule) external returns (uint32 stock);
 
   function app__harvest(bytes32 agentId, uint8 requested) external returns (uint8 executed);
+
+  function app__getPoolState()
+    external
+    view
+    returns (uint32 stock, uint32 round, bool collapsed, bool hardRule);
 }

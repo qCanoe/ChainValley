@@ -1,0 +1,31 @@
+[
+  {
+    "type": "function",
+    "name": "app__initFishery",
+    "inputs": [{ "name": "hardRule", "type": "bool" }],
+    "outputs": [{ "name": "stock", "type": "uint32" }],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "app__harvest",
+    "inputs": [
+      { "name": "agentId", "type": "bytes32" },
+      { "name": "requested", "type": "uint8" }
+    ],
+    "outputs": [{ "name": "executed", "type": "uint8" }],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "app__getPoolState",
+    "inputs": [],
+    "outputs": [
+      { "name": "stock", "type": "uint32" },
+      { "name": "round", "type": "uint32" },
+      { "name": "collapsed", "type": "bool" },
+      { "name": "hardRule", "type": "bool" }
+    ],
+    "stateMutability": "view"
+  }
+]
