@@ -109,19 +109,6 @@ Use `notebooks/analysis.ipynb` to load completed run JSON files, compute metrics
 
 ---
 
-## Notes
-
-> [!TIP]
-> **Naming:** The repository is **ChainValley**; the study and proposal title use **ChainVille**—same experiment.
-
-> [!NOTE]
-> Phase-2 extensions (dashboard, richer governance) are out of scope for the current minimal stack; see [`Project Description.md`](./Project%20Description.md) §6 for the staged roadmap.
-
-> [!WARNING]
-> **Secrets:** Never commit `.env` or private keys. The default `.gitignore` excludes common artifact and env patterns.
-
----
-
 ## Acknowledgments
 
 Built with [MUD](https://mud.dev) (Lattice) and Foundry. Course project context and full references are listed in **[`Project Description.md`](./Project%20Description.md)**.
