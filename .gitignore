@@ -53,8 +53,9 @@ broadcast/
 Thumbs.db
 Desktop.ini
 
-# IDE (local overrides; shared .vscode may stay tracked)
+# IDE (local only — already-tracked files must be removed with `git rm -r --cached`)
 .idea/
+.vscode/
 
 # Logs
 *.log
