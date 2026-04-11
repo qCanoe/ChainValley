@@ -11,10 +11,23 @@ pragma solidity >=0.8.24;
 interface IFisherySystem {
   function app__initFishery(bool hardRule) external returns (uint32 stock);
 
-  function app__harvest(bytes32 agentId, uint8 requested) external returns (uint8 executed);
+  function app__harvest(bytes32 agentId, uint8 requested) external returns (uint8 accepted);
+
+  function app__recordRejectedHarvest(bytes32 agentId, uint8 requested) external;
+
+  function app__endRound() external returns (uint32 round, uint32 stockAfterRegeneration, bool collapsed);
 
   function app__getPoolState()
     external
     view
     returns (uint32 stock, uint32 round, bool collapsed, bool hardRule);
+
+  function app__getPendingRoundState()
+    external
+    view
+    returns (uint8 submissionCount, bool[5] memory submitted, uint32[5] memory requestedHarvests);
+
+  function app__getRoundLog(uint32 round) external view returns (uint32[5] memory executedHarvests);
+
+  function app__getAllCumulativeHarvests() external view returns (uint32[5] memory cumulativeHarvests);
 }
