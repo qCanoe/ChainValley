@@ -1,0 +1,14 @@
+diff --git a/dist/node.js b/dist/node.js
+index 8aa6cd2e5759f66b96fbc5dad64187f53a0139d3..1d38ef08e1f43f61e74a9ee7afac5636dd66a0eb 100644
+--- a/dist/node.js
++++ b/dist/node.js
+@@ -7356,7 +7356,8 @@ async function buildSystemsManifest(opts) {
+   const forgeOutDir = await getForgeOutDirectory();
+   const contractArtifacts = await findContractArtifacts({ forgeOutDir });
+   function getSystemArtifact(system) {
+-    const artifact = contractArtifacts.find((a) => a.sourcePath === system.sourcePath && a.name === system.label);
++    const normPath = (p) => p.replace(/\\/g, "/");
++    const artifact = contractArtifacts.find((a) => normPath(a.sourcePath) === normPath(system.sourcePath) && a.name === system.label);
+     if (!artifact) {
+       throw new Error(
+         `Could not find build artifact for system \`${system.label}\` at \`${system.sourcePath}\`. Did \`forge build\` run successfully?`

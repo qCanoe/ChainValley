@@ -1,2 +1,4 @@
 packages:
   - packages/*
+patchedDependencies:
+  '@latticexyz/world@2.2.23': patches/@latticexyz__world@2.2.23.patch
