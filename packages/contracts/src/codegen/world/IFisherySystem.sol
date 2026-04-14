@@ -17,10 +17,7 @@ interface IFisherySystem {
 
   function app__endRound() external returns (uint32 round, uint32 stockAfterRegeneration, bool collapsed);
 
-  function app__getPoolState()
-    external
-    view
-    returns (uint32 stock, uint32 round, bool collapsed, bool hardRule);
+  function app__getPoolState() external view returns (uint32 stock, uint32 round, bool collapsed, bool hardRule);
 
   function app__getPendingRoundState()
     external
